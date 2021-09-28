@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <!-- header -->
+    <!-- <header>
+        <h1>Khuất Văn Chung</h1>
+    </header> -->
+
+    <!-- body -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 game-table box">
+                <div class="list-block row" data-row="1">
+                    <div class="block col-sm box" data-col="1">
+                        <img src="./image/quan-den.png" alt="" class="w-100">
+                    </div>
+                    <div class="block col-sm box" data-col="2"></div>
+                    <div class="block col-sm box" data-col="3"></div>
+                    <div class="block col-sm box" data-col="4"></div>
+                </div>
+                <div class="list-block row" data-row="2">
+                    <div class="block col-sm box" data-col="1"></div>
+                    <div class="block col-sm box" data-col="2"></div>
+                    <div class="block col-sm box" data-col="3"></div>
+                    <div class="block col-sm box" data-col="4"></div>
+                </div>
+                <div class="list-block row" data-row="3">
+                    <div class="block col-sm box" data-col="1"></div>
+                    <div class="block col-sm box" data-col="2"></div>
+                    <div class="block col-sm box" data-col="3"></div>
+                    <div class="block col-sm box" data-col="4"></div>
+                </div>
+                <div class="list-block row" data-row="4">
+                    <div class="block col-sm box" data-col="1"></div>
+                    <div class="block col-sm box" data-col="2"></div>
+                    <div class="block col-sm box" data-col="3"></div>
+                    <div class="block col-sm box" data-col="4"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4 game-function box p-2 d-flex justify-content-center align-items-center">
+                <div class="main-game-function w-100">
+                    <h5 class="text-center">Tỷ số game</h5>
+                    <!-- tỷ số -->
+                    <div class="score-game d-flex justify-content-center align-items-center">
+                        <div class="my-name text-right active"><span>User1</span></div>
+                        <div class="score p-2">
+                            <span class="point my-point">0</span>
+                            <span class="point">-</span>
+                            <span class="point competitor-point">0</span>
+                        </div>
+                        <div class="competitor-name text-left"><span>User2</span></div>
+                    </div>
+
+                    <!-- chọn chế độ chơi -->
+                    <div class="size-number row pt-2 pb-2">
+                        <div class="col-sm d-flex justify-content-center align-items-center">
+                            <input type="radio" name="Size" value="3" id="size3" checked>
+                            <label for="size3" class="m-0">Size 3</label>
+                        </div>
+
+
+                        <div class="col-sm d-flex justify-content-center align-items-center">
+                            <input type="radio" name="Size" value="4" id="size4">
+                            <label for="size4" class="m-0">Size 4</label>
+                        </div>
+
+
+                        <div class="col-sm d-flex justify-content-center align-items-center">
+                            <input type="radio" name="Size" value="5" id="size5">
+                            <label for="size5" class="m-0">Size 5</label>
+                        </div>
+                    </div>
+
+                    <!-- button xử lý xự kiện -->
+                    <div class="list-button w-100 p-2 mt-4">
+                        <div class="btn-ingame d-flex mb-2">
+                            <button class="w-50 btn btn-warning mr-1">Undo</button>
+                            <button class="w-50 btn btn-primary ml-1">Reset</button>
+                        </div>
+
+                        <button class="btn btn-danger w-100">Leave</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+
+
+    <!-- scripts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+
+    <script src="./scripts.js"></script>
+</body>
+
+</html>
