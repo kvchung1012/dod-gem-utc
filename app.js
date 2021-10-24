@@ -14,8 +14,7 @@ var usersRouter = require("./routes/users");
 const { Console } = require("console");
 
 var app = express();
-const PORT = process.env.PORT || 5000;
-
+const PORT = 5000;
 // config socket.io
 const http = require("http");
 const { join } = require("path");
