@@ -14,6 +14,7 @@ var usersRouter = require("./routes/users");
 const { Console } = require("console");
 
 var app = express();
+const PORT = process.env.PORT || 5000;
 
 // config socket.io
 const http = require("http");
@@ -499,7 +500,7 @@ function Min() {}
 
 function Max() {}
 
-server.listen(5000, function () {
+server.listen(PORT, function () {
   console.log("Start server port 5000...");
 });
 
