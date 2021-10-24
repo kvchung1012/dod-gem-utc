@@ -114,8 +114,13 @@
         crossorigin="anonymous"></script>
 
         <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
-
+        <script src="https://cdn.socket.io/4.2.0/socket.io.min.js" integrity="sha384-PiBR5S00EtOj2Lto9Uu81cmoyZqR57XcOna1oAuVuIEjzj0wpqDVfD0JA9eXlRsj" crossorigin="anonymous"></script>
     <script src="./scripts.js"></script>
+
+    <script>
+           const socket = io("http://localhost:5000");
+           console.log(socket)
+    </script>
 </body>
 
 </html>
