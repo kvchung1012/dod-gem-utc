@@ -14,11 +14,11 @@ var usersRouter = require("./routes/users");
 const { Console } = require("console");
 
 var app = express();
-const PORT = 5000;
+const PORT =process.env.PORT || 5000;
 // config socket.io
 const http = require("http");
 const { join } = require("path");
-const server = http.createServer(app);
+const server = http.Server(app);
 const io = socketio(server);
 
 // view engine setup
