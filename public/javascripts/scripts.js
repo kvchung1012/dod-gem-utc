@@ -2,7 +2,7 @@
 var config = {};
 var group = "";
 // socket events
-const socket = io("http://localhost:5000");
+const socket = io("https://dodgem.herokuapp.com/");
 console.log(socket.id);
 socket.on("startUpGame", (setUp) => {
   config = setUp;
