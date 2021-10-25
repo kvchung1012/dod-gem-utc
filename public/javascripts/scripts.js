@@ -19,10 +19,12 @@ socket.on("suggest", (arr, moveOut) => {
   }
 });
 
-socket.on("join_status", (turnCurrent, msg) => {
+socket.on("join_status", (status,msg) => {
   swal(msg);
-  $(".my-name,.competitor-name").removeClass("active");
-  $(".my-name").addClass("active");
+  if(status){
+    $(".my-name,.competitor-name").removeClass("active");
+    $(".my-name").addClass("active");
+  }
 });
 
 socket.on("move_item", (turn, turnCurrent, old_row, old_col, row, col) => {

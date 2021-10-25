@@ -14,7 +14,7 @@ var usersRouter = require("./routes/users");
 const { Console } = require("console");
 
 var app = express();
-const PORT =process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 // config socket.io
 const http = require("http");
 const { join } = require("path");
@@ -25,7 +25,7 @@ const io = socketio(server);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
-app.use(logger("dev"));
+//app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -200,7 +200,7 @@ io.on("connect", (socket) => {
           second: 0,
         },
       });
-      io.to(socket.id).emit("join_status", true, "Thành công you are player 1");
+      io.to(socket.id).emit("join_status",true, "Thành công you are player 1");
     }
     // đã có nhom
     else {
@@ -208,20 +208,18 @@ io.on("connect", (socket) => {
         socket.join(code);
         check["first"] = socket.id;
         io.to(socket.id).emit(
-          "join_status",
-          true,
+          "join_status",true,
           "Thành công you are player 1"
         );
       } else if (check["second"] == "") {
         socket.join(code);
         check["second"] = socket.id;
         io.to(socket.id).emit(
-          "join_status",
-          false,
+          "join_status",true,
           "Thành công you are player 2"
         );
       } else {
-        io.to(socket.id).emit("join_status", "Phòng đã đủ người");
+        io.to(socket.id).emit("join_status",false, "Phòng đã đủ người");
       }
     }
   });
@@ -443,19 +441,17 @@ io.on("connect", (socket) => {
     current_group["score"]["second"] = 0;
 
     io.in(group).emit("resize", val);
-
   });
 
   socket.on("disconnect", () => {
-    console.log(socket.id + " leave");
-    game_match.forEach((item,index)=>{
-        console.log(item,index);
-        if(item.first==socket.id){
-          item.first == '';
-        }
-        else if(item.second==socket.id){
-          item.second = '';
-        }
+    // console.log(socket.id + " leave");
+    game_match.forEach((item) => {
+      console.log(item.first, item.second);
+      if (item.first == socket.id) {
+        item.first = "";
+      } else if (item.second == socket.id) {
+        item.second = "";
+      }
     });
   });
 });
