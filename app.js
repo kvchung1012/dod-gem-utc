@@ -340,51 +340,56 @@ io.on("connect", (socket) => {
 
   socket.on("move_group", (group, row, col) => {
     let current_group = game_match.filter((x) => x.code == group)[0];
-    let turnRequest = current_group["first"] == socket.id ? 1 : 2;
-    if (
-      (turnRequest == 1 && current_group["firstCanMove"]) ||
-      (turnRequest == 2 && current_group["secondCanMove"])
-    ) {
-      let suggest =
-        turnRequest == 1
-          ? current_group["first_suggest"]
-          : current_group["second_suggest"];
-
-      suggest.forEach((el, idx) => {
-        if (el["row"] == row && el["col"] == col) {
-          if (turnRequest == 1) {
-            current_group["firstStep"] = false;
-            current_group["firstCanMove"] = false;
-            current_group.martrix[current_group["firstPick"].row][
-              current_group["firstPick"].col
-            ] = 0;
-          } else {
-            current_group["firstStep"] = true;
-            current_group["secondCanMove"] = false;
-            current_group.martrix[current_group["secondPick"].row][
-              current_group["secondPick"].col
-            ] = 0;
+    if(current_group.first!='' && current_group.second != ''){
+      let turnRequest = current_group["first"] == socket.id ? 1 : 2;
+      if (
+        (turnRequest == 1 && current_group["firstCanMove"]) ||
+        (turnRequest == 2 && current_group["secondCanMove"])
+      ) {
+        let suggest =
+          turnRequest == 1
+            ? current_group["first_suggest"]
+            : current_group["second_suggest"];
+  
+        suggest.forEach((el, idx) => {
+          if (el["row"] == row && el["col"] == col) {
+            if (turnRequest == 1) {
+              current_group["firstStep"] = false;
+              current_group["firstCanMove"] = false;
+              current_group.martrix[current_group["firstPick"].row][
+                current_group["firstPick"].col
+              ] = 0;
+            } else {
+              current_group["firstStep"] = true;
+              current_group["secondCanMove"] = false;
+              current_group.martrix[current_group["secondPick"].row][
+                current_group["secondPick"].col
+              ] = 0;
+            }
+            current_group.martrix[row][col] = turnRequest;
+  
+            // gửi kết quả về cho người chơi
+            let oldPick =
+              turnRequest == 1
+                ? current_group["firstPick"]
+                : current_group["secondPick"];
+  
+            let turn = current_group["firstStep"];
+            io.in(group).emit(
+              "move_item",
+              turnRequest,
+              turn, // gửi về socket id của lượt người chơi sắp tới
+              oldPick.row + "",
+              oldPick.col + "",
+              row,
+              col
+            );
           }
-          current_group.martrix[row][col] = turnRequest;
-
-          // gửi kết quả về cho người chơi
-          let oldPick =
-            turnRequest == 1
-              ? current_group["firstPick"]
-              : current_group["secondPick"];
-
-          let turn = current_group["firstStep"];
-          io.in(group).emit(
-            "move_item",
-            turnRequest,
-            turn, // gửi về socket id của lượt người chơi sắp tới
-            oldPick.row + "",
-            oldPick.col + "",
-            row,
-            col
-          );
-        }
-      });
+        });
+      }
+    }
+    else{
+      io.to(socket.id).emit('warning','Phòng chưa đủ người sao đi được');
     }
   });
 

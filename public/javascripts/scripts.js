@@ -109,6 +109,11 @@ socket.on('resize',row=>{
   SetUp(row);
 })
 
+
+socket.on('warning',msg=>{
+  swal(msg);
+})
+
 // function client
 
 // // click vào quân cờ để gợi ý
