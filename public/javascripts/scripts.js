@@ -17,6 +17,7 @@ socket.on("suggest", (arr, row, col, moveOut) => {
 });
 
 socket.on("join_status", (status, msg,turn,row) => {
+  console.log(row);
   swal(msg);
   SetUp(row);
   if (status) {
