@@ -133,12 +133,14 @@ io.on("connect", (socket) => {
       userConfig["suggest"] = suggest_result;
       userConfig["humanCanMove"] = true;
       // return cho client
-      if(suggest_result.length>0)
-        io.to(socket.id).emit("suggest", suggest_result,current_row, current_col, moveOut);
-      else
+      if(suggest_result.length==0 && Count(userConfig.martrix,1)==1)
       {
         MiniMaxEndGame(io, userConfig, false);
         return;
+      }
+      else
+      {
+        io.to(socket.id).emit("suggest", suggest_result,current_row, current_col, moveOut);
       }
       // sinh nước đi tại đây
     }
@@ -348,7 +350,7 @@ io.on("connect", (socket) => {
       current_group["first_suggest"] = suggest_result;
       current_group["firstCanMove"] = true;
       // return cho client
-      if(suggest_result.length===0){
+      if(suggest_result.length===0 && Count(current_group.martrix,1)==1){
         EndGame(io,current_group,"second");
         return;
       }
@@ -408,7 +410,7 @@ io.on("connect", (socket) => {
       current_group["second_suggest"] = suggest_result;
       current_group["secondCanMove"] = true;
       // return cho client
-      if(suggest_result.length===0){
+      if(suggest_result.length===0 && Count(current_group.martrix,2)==1){
         EndGame(io,current_group,"first");
         return;
       }
@@ -886,6 +888,17 @@ function GetChilren(currentMatrix, isMax, arr) {
 
   }
   return martrixPending;
+}
+
+function Count(mtx,turn){
+  let count = 0;
+  mtx.forEach(rows=>{
+    rows.forEach(col=>{
+      if(col == turn)
+      count++;
+    })
+  })
+  return count;
 }
 
 server.listen(PORT, function () {
