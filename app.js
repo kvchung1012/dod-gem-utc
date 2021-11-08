@@ -350,7 +350,7 @@ io.on("connect", (socket) => {
       current_group["first_suggest"] = suggest_result;
       current_group["firstCanMove"] = true;
       // return cho client
-      if(suggest_result.length===0 && Count(current_group.martrix,1)==1){
+      if(suggest_result.length===0 && Count(current_group.martrix,1)==1 && !moveOut){
         EndGame(io,current_group,"second");
         return;
       }
@@ -410,7 +410,7 @@ io.on("connect", (socket) => {
       current_group["second_suggest"] = suggest_result;
       current_group["secondCanMove"] = true;
       // return cho client
-      if(suggest_result.length===0 && Count(current_group.martrix,2)==1){
+      if(suggest_result.length===0 && Count(current_group.martrix,2)==1 && !moveOut){
         EndGame(io,current_group,"first");
         return;
       }
