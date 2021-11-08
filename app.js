@@ -133,8 +133,13 @@ io.on("connect", (socket) => {
       userConfig["suggest"] = suggest_result;
       userConfig["humanCanMove"] = true;
       // return cho client
-      io.to(socket.id).emit("suggest", suggest_result,current_row, current_col, moveOut);
-
+      if(suggest_result.length>0)
+        io.to(socket.id).emit("suggest", suggest_result,current_row, current_col, moveOut);
+      else
+      {
+        MiniMaxEndGame(io, userConfig, false);
+        return;
+      }
       // sinh nước đi tại đây
     }
   });
@@ -343,7 +348,10 @@ io.on("connect", (socket) => {
       current_group["first_suggest"] = suggest_result;
       current_group["firstCanMove"] = true;
       // return cho client
-
+      if(suggest_result.length===0){
+        EndGame(io,current_group,"second");
+        return;
+      }
       io.to(socket.id).emit("suggest", suggest_result,current_row,current_col, moveOut);
     }
 
@@ -400,6 +408,10 @@ io.on("connect", (socket) => {
       current_group["second_suggest"] = suggest_result;
       current_group["secondCanMove"] = true;
       // return cho client
+      if(suggest_result.length===0){
+        EndGame(io,current_group,"first");
+        return;
+      }
       io.to(socket.id).emit("suggest", suggest_result,current_row,current_col, moveOut);
     }
   });

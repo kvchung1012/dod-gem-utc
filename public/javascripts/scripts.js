@@ -17,7 +17,6 @@ socket.on("suggest", (arr, row, col, moveOut) => {
 });
 
 socket.on("join_status", (status, msg,turn,row) => {
-  console.log(row);
   swal(msg);
   SetUp(row);
   if (status) {
@@ -157,6 +156,7 @@ function StepCurrent(e) {
 // // hiển thị các nước đi tiếp theo
 function SuggestNextStep(arr) {
   $(".block").removeClass("suggest");
+  $(".block").children('div').removeClass('active');
   arr.forEach((element) => {
     let i = element["row"];
     let j = element["col"];
