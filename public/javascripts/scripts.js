@@ -16,8 +16,9 @@ socket.on("suggest", (arr, row, col, moveOut) => {
   }
 });
 
-socket.on("join_status", (status, msg,turn) => {
+socket.on("join_status", (status, msg,turn,row) => {
   swal(msg);
+  SetUp(row);
   if (status) {
     $(".my-name,.competitor-name").removeClass("active");
     if(turn==1){

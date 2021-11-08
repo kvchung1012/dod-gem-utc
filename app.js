@@ -261,7 +261,7 @@ io.on("connect", (socket) => {
           second: 0,
         },
       });
-      io.to(socket.id).emit("join_status", true, "Thành công you are player 1",1);
+      io.to(socket.id).emit("join_status", true, "Thành công you are player 1",1,game_match.row);
     }
     // đã có nhom
     else {
@@ -277,7 +277,7 @@ io.on("connect", (socket) => {
         check["second"] = socket.id;
         io.to(socket.id).emit(
           "join_status", true,
-          "Thành công you are player 2",2
+          "Thành công you are player 2",2,game_match.row
         );
       } else {
         io.to(socket.id).emit("join_status", false, "Phòng đã đủ người");
