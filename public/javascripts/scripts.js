@@ -9,26 +9,30 @@ socket.on("startUpGame", (setUp) => {
   SetUp(setUp.row);
 });
 
-socket.on("suggest", (arr, moveOut) => {
+socket.on("suggest", (arr, row, col, moveOut) => {
   SuggestNextStep(arr);
   if (moveOut) {
-    let res = confirm("go out !");
-    if (res) {
-      socket.emit("move_out_group", group, res);
-    }
+    $(".block[data-row=" + row + "][data-col=" + col + "]").children('div').addClass('active');
   }
 });
 
-socket.on("join_status", (status,msg) => {
+socket.on("join_status", (status, msg,turn) => {
   swal(msg);
-  if(status){
+  if (status) {
     $(".my-name,.competitor-name").removeClass("active");
-    $(".my-name").addClass("active");
+    if(turn==1){
+      $(".my-name").addClass("active");
+    }
+    else
+      $(".competitor-name").addClass("active");
   }
 });
 
 socket.on("move_item", (turn, turnCurrent, old_row, old_col, row, col) => {
   $(".block").removeClass("suggest"); // xóa đi các class gợi ý
+  $(".move-out").removeClass("active"); // xóa đi các class gợi ý
+  $(".move-out-stand").removeClass("active"); // xóa đi các class gợi ý
+
   // remove click
   $(".block[data-row=" + old_row + "][data-col=" + old_col + "]").html(""); // xóa đi images
   $(".block[data-row=" + old_row + "][data-col=" + old_col + "]").click(
@@ -38,25 +42,19 @@ socket.on("move_item", (turn, turnCurrent, old_row, old_col, row, col) => {
     }
   );
 
-  $(".block[data-row=" + row + "][data-col=" + col + "]").click(function () {
-    // bind xự kiện onclick
-    Choose(this);
-  });
+  $(".block[data-row=" + row + "][data-col=" + col + "]").prop('onclick', null).off('click');
   $(".block[data-row=" + row + "][data-col=" + col + "]").append(
-    `<img src="${
-      turn === 1 ? "./images/quan-do.png" : "./images/quan-den.png"
-    }" alt="" class="w-100 my-item" onclick="StepCurrent(this)">`
+    `${turn===1?'<div class="move-out" onclick="MoveOut()"></div>':'<div class="move-out-stand" onclick="MoveOut()"></div>'}
+        <img src="${turn === 1 ? "./images/quan-do.png" : "./images/quan-den.png"}" 
+        alt="" class="w-100 my-item" onclick="StepCurrent(this)">`
   );
 
   // cập nhật lượt chơi
   $(".my-name,.competitor-name").removeClass("active");
-  console.log(turnCurrent,socket.id);
-  if (turnCurrent) {
+  if (turnCurrent == 1) {
     $(".my-name").addClass("active");
-    console.log("my");
   } else {
     $(".competitor-name").addClass("active");
-    console.log("you");
   }
 });
 
@@ -64,7 +62,9 @@ socket.on("move_item_out", (turnCurrent, row, col) => {
   $(".block").removeClass("suggest"); // xóa đi các class gợi ý
   // remove click
   $(".block[data-row=" + row + "][data-col=" + col + "]").html(""); // xóa đi images
-
+  $(".block[data-row=" + row + "][data-col=" + col + "]").click(function () {
+    Choose(this);
+  })
   // cập nhật lượt chơi
   $(".my-name,.competitor-name").removeClass("active");
   if (turnCurrent) {
@@ -74,7 +74,7 @@ socket.on("move_item_out", (turnCurrent, row, col) => {
   }
 });
 
-socket.on("end_game", (row,turnCurrent, id,score) => {
+socket.on("end_game", (row, turnCurrent, id, score) => {
   $(".my-name,.competitor-name").removeClass("active");
   if (id === socket.id) {
     swal({
@@ -105,12 +105,39 @@ socket.on("end_game", (row,turnCurrent, id,score) => {
 });
 
 
-socket.on('resize',row=>{
+socket.on("end_game_bot", (row, score, humanWin) => {
+  if (humanWin) {
+    swal({
+      title: "Good job!",
+      text: "Chúc mừng bạn !",
+      icon: "success",
+    });
+  }
+  else {
+    swal({
+      title: "Noob!",
+      text: "Bạn hơi non !",
+      icon: "warning",
+    });
+  }
+
+  $('.point1').html('');
+  $('.my-point').html(score.human);
+  $('.competitor-point').html(score.bot);
+  SetUp(row);
+});
+
+
+socket.on('nogroup', msg => {
+  swal("người chơi đã thoát nhóm mời bạn bấm nút thoát để làm lại cuộc đời");
+})
+
+socket.on('resize', row => {
   SetUp(row);
 })
 
 
-socket.on('warning',msg=>{
+socket.on('warning', msg => {
   swal(msg);
 })
 
@@ -164,7 +191,8 @@ function SetUp(row_number) {
                                                   <img src="./images/quan-den.png" alt="" class="w-100" onclick="StepCurrent(this)">
                                             </div>`;
       } else {
-        row_single += ` <div class="block col-sm box" data-col="${j}" data-row="${i}" onclick="Choose(this)"></div>`;
+        row_single += ` <div class="block col-sm box" data-col="${j}" data-row="${i}" onclick="Choose(this)">
+                                            </div>`;
       }
     }
     row_single += `</div>`;
@@ -182,8 +210,15 @@ function JoinGroup(e) {
 }
 
 ReSize();
-function  ReSize() {
-  $('input[name=Size]').on('change',function () {
-    socket.emit("change_size",group,$(this).val());
+function ReSize() {
+  $('input[name=Size]').on('change', function () {
+    socket.emit("change_size", group, $(this).val());
   })
+}
+
+function MoveOut() {
+  if (group != '')
+    socket.emit("move_out_group", group);
+  else
+    socket.emit("move");
 }

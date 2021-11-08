@@ -22,6 +22,55 @@
     <!-- body -->
     <div class="container">
         <div class="row">
+            <div class="col-md-4 game-function box p-2 d-flex justify-content-center align-items-center">
+                <div class="main-game-function w-100">
+                    
+                    <input type="text" name="Code" id="code" placeholder="Nhập mã phòng và enter" class="mb-3 form-control" onchange="JoinGroup(this)">
+
+                    <h5 class="text-center">Tỷ số game</h5>
+                    <!-- tỷ số -->
+                    <div class="score-game d-flex justify-content-center align-items-center">
+                        <div class="my-name text-right active"><span>User1</span></div>
+                        <div class="score p-2">
+                            <span class="point point1 my-point">0</span>
+                            <span class="point">-</span>
+                            <span class="point point1  competitor-point">0</span>
+                        </div>
+                        <div class="competitor-name text-left"><span>User2</span></div>
+                    </div>
+
+                    <!-- chọn chế độ chơi -->
+                    <div class="size-number row pt-2 pb-2">
+                        <div class="col-sm d-flex justify-content-center align-items-center">
+                            <input type="radio" name="Size" value="2" id="size3" checked>
+                            <label for="size3" class="m-0">Size 3</label>
+                        </div>
+
+
+                        <div class="col-sm d-flex justify-content-center align-items-center">
+                            <input type="radio" name="Size" value="3" id="size4">
+                            <label for="size4" class="m-0">Size 4</label>
+                        </div>
+
+
+                        <div class="col-sm d-flex justify-content-center align-items-center">
+                            <input type="radio" name="Size" value="4" id="size5">
+                            <label for="size5" class="m-0">Size 5</label>
+                        </div>
+                    </div>
+
+                    <!-- button xử lý xự kiện -->
+                    <div class="list-button w-100 p-2 mt-4">
+                        <!-- <div class="btn-ingame d-flex mb-2">
+                            <button class="w-50 btn btn-warning mr-1">Undo</button>
+                            <button class="w-50 btn btn-primary ml-1">Reset</button>
+                        </div> -->
+
+                        <a href="/" class="btn btn-danger w-100" >Leave</a>
+                    </div>
+                </div>
+
+            </div>
             <div class="col-md-8 game-table box">
                 <div class="list-block row" data-row="1">
                     <div class="block col-sm box" data-col="1">
@@ -50,56 +99,6 @@
                     <div class="block col-sm box" data-col="4"></div>
                 </div>
             </div>
-
-            <div class="col-md-4 game-function box p-2 d-flex justify-content-center align-items-center">
-                <div class="main-game-function w-100">
-                    
-                    <input type="text" name="Code" id="code" placeholder="Nhập mã phòng và enter" class="mb-3 form-control" onchange="JoinGroup(this)">
-
-                    <h5 class="text-center">Tỷ số game</h5>
-                    <!-- tỷ số -->
-                    <div class="score-game d-flex justify-content-center align-items-center">
-                        <div class="my-name text-right"><span>User1</span></div>
-                        <div class="score p-2">
-                            <span class="point my-point">0</span>
-                            <span class="point">-</span>
-                            <span class="point competitor-point">0</span>
-                        </div>
-                        <div class="competitor-name text-left"><span>User2</span></div>
-                    </div>
-
-                    <!-- chọn chế độ chơi -->
-                    <div class="size-number row pt-2 pb-2">
-                        <div class="col-sm d-flex justify-content-center align-items-center">
-                            <input type="radio" name="Size" value="3" id="size3" checked>
-                            <label for="size3" class="m-0">Size 3</label>
-                        </div>
-
-
-                        <div class="col-sm d-flex justify-content-center align-items-center">
-                            <input type="radio" name="Size" value="4" id="size4">
-                            <label for="size4" class="m-0">Size 4</label>
-                        </div>
-
-
-                        <div class="col-sm d-flex justify-content-center align-items-center">
-                            <input type="radio" name="Size" value="5" id="size5">
-                            <label for="size5" class="m-0">Size 5</label>
-                        </div>
-                    </div>
-
-                    <!-- button xử lý xự kiện -->
-                    <div class="list-button w-100 p-2 mt-4">
-                        <!-- <div class="btn-ingame d-flex mb-2">
-                            <button class="w-50 btn btn-warning mr-1">Undo</button>
-                            <button class="w-50 btn btn-primary ml-1">Reset</button>
-                        </div> -->
-
-                        <a href="/" class="btn btn-danger w-100" >Leave</a>
-                    </div>
-                </div>
-
-            </div>
         </div>
     </div>
 
@@ -125,6 +124,7 @@
         crossorigin="anonymous"></script>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>    
     <script src="./javascripts/scripts.js"></script>
 </body>
 
