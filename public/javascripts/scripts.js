@@ -30,21 +30,22 @@ socket.on("join_status", (status, msg,turn,row) => {
 });
 
 socket.on("move_item", (turn, turnCurrent, old_row, old_col, row, col) => {
+  console.log(turn,turnCurrent,old_row,old_col,row,col);
   $(".block").removeClass("suggest"); // xóa đi các class gợi ý
   $(".move-out").removeClass("active"); // xóa đi các class gợi ý
   $(".move-out-stand").removeClass("active"); // xóa đi các class gợi ý
 
   // remove click
-  $(".block[data-row=" + old_row + "][data-col=" + old_col + "]").html(""); // xóa đi images
-  $(".block[data-row=" + old_row + "][data-col=" + old_col + "]").click(
+  $(`.block[data-row=${old_row}][data-col=${old_col}]`).html(""); // xóa đi images
+  $(`.block[data-row=${old_row}][data-col=${old_col}]`).click(
     function () {
       // bind xự kiện onclick
       Choose(this);
     }
   );
 
-  $(".block[data-row=" + row + "][data-col=" + col + "]").prop('onclick', null).off('click');
-  $(".block[data-row=" + row + "][data-col=" + col + "]").append(
+  $(`.block[data-row=${row}][data-col=${col}]`).prop('onclick', null).off('click');
+  $(`.block[data-row=${row}][data-col=${col}]`).append(
     `${turn===1?'<div class="move-out" onclick="MoveOut()"></div>':'<div class="move-out-stand" onclick="MoveOut()"></div>'}
         <img src="${turn === 1 ? "./images/quan-do.png" : "./images/quan-den.png"}" 
         alt="" class="w-100 my-item" onclick="StepCurrent(this)">`

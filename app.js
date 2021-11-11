@@ -133,14 +133,12 @@ io.on("connect", (socket) => {
       userConfig["suggest"] = suggest_result;
       userConfig["humanCanMove"] = true;
       // return cho client
-      if(suggest_result.length==0 && Count(userConfig.martrix,1)==1)
-      {
+      if (suggest_result.length == 0 && Count(userConfig.martrix, 1) == 1) {
         MiniMaxEndGame(io, userConfig, false);
         return;
       }
-      else
-      {
-        io.to(socket.id).emit("suggest", suggest_result,current_row, current_col, moveOut);
+      else {
+        io.to(socket.id).emit("suggest", suggest_result, current_row, current_col, moveOut);
       }
       // sinh nước đi tại đây
     }
@@ -185,6 +183,7 @@ io.on("connect", (socket) => {
             ] = 0;
 
             // gửi kết quả về cho người chơi
+
             io.to(socket.id).emit(
               "move_item",
               1,  // di chuyển quân cờ 1
@@ -201,7 +200,7 @@ io.on("connect", (socket) => {
       // --------------NƯỚC ĐI CỦA MÁY-----------------------------
       let alpha = 10000;
       let beta = -10000;
-      var next = (MiniMax(userConfig.martrix, 10, alpha, beta, false, []));
+      var next = (MiniMax({ matrix: userConfig.martrix }, 10, alpha, beta, false, []));
       // xử lý nước đi của máy
       if (next.out) {  // đi ra ngoài
         userConfig["botPoint"]++;
@@ -211,6 +210,7 @@ io.on("connect", (socket) => {
           return;
         }
         userConfig.martrix[next.current.row][next.current.col] = 0;
+
         io.to(socket.id).emit(
           "move_item_out",
           1,
@@ -221,6 +221,8 @@ io.on("connect", (socket) => {
       else {
         userConfig.martrix[next.current.row][next.current.col] = 0;
         userConfig.martrix[next.step.row][next.step.col] = 2;
+
+        console.log(next)
         io.to(socket.id).emit(
           "move_item",
           2,
@@ -268,7 +270,7 @@ io.on("connect", (socket) => {
           second: 0,
         },
       });
-      io.to(socket.id).emit("join_status", true, "Thành công you are player 1",1,2); // 1 là người chơi 1, 2 là số dòng bàn cờ
+      io.to(socket.id).emit("join_status", true, "Thành công you are player 1", 1, 2); // 1 là người chơi 1, 2 là số dòng bàn cờ
     }
     // đã có nhom
     else {
@@ -284,7 +286,7 @@ io.on("connect", (socket) => {
         check["second"] = socket.id;
         io.to(socket.id).emit(
           "join_status", true,
-          "Thành công you are player 2",2,check.row
+          "Thành công you are player 2", 2, check.row
         );
       } else {
         io.to(socket.id).emit("join_status", false, "Phòng đã đủ người");
@@ -350,11 +352,11 @@ io.on("connect", (socket) => {
       current_group["first_suggest"] = suggest_result;
       current_group["firstCanMove"] = true;
       // return cho client
-      if(suggest_result.length===0 && Count(current_group.martrix,1)==1 && !moveOut){
-        EndGame(io,current_group,"second");
+      if (suggest_result.length === 0 && Count(current_group.martrix, 1) == 1 && !moveOut) {
+        EndGame(io, current_group, "second");
         return;
       }
-      io.to(socket.id).emit("suggest", suggest_result,current_row,current_col, moveOut);
+      io.to(socket.id).emit("suggest", suggest_result, current_row, current_col, moveOut);
     }
 
     // người chơi thứ 2 gửi
@@ -410,11 +412,11 @@ io.on("connect", (socket) => {
       current_group["second_suggest"] = suggest_result;
       current_group["secondCanMove"] = true;
       // return cho client
-      if(suggest_result.length===0 && Count(current_group.martrix,2)==1 && !moveOut){
-        EndGame(io,current_group,"first");
+      if (suggest_result.length === 0 && Count(current_group.martrix, 2) == 1 && !moveOut) {
+        EndGame(io, current_group, "first");
         return;
       }
-      io.to(socket.id).emit("suggest", suggest_result,current_row,current_col, moveOut);
+      io.to(socket.id).emit("suggest", suggest_result, current_row, current_col, moveOut);
     }
   });
 
@@ -641,49 +643,51 @@ function MiniMaxEndGame(io, game, humanWin) {
 }
 
 function MiniMax(node, depth, alpha, beta, isMax, arr) {
-  let isEnd = IsEndGameMatrix(node);
+  let isEnd = IsEndGameMatrix(node.matrix);
   if (isEnd || depth == 0) {
-    return {
-      matrix: node
-    };
+    return node
   }
   if (isMax) {  // đỉnh max
-    let arrMtx = GetChilren(node, true, arr);  // tìm tất cả các con của nút max
+    let arrMtx = GetChilren(node.matrix, true, arr);  // tìm tất cả các con của nút max
     if (arrMtx.length == 0) {  // trường hợp không đi được cũng là nước cuối
       // console.log("node",node,isMax)
-      return {
-        matrix: node
-      };
+      return node
     }
+    let obj = new Object();
+    let best = -10000;
     arrMtx.forEach(mtx => {
-      let best = -10000;
-      let res = MiniMax(mtx.matrix, depth - 1, alpha, beta, false, arr);
+      let res = MiniMax(mtx, depth - 1, alpha, beta, false, arr);
       let val = GetValueOfMatrix(res.matrix, false);
       best = Math.max(best, val)
+      if (best === val)
+        obj = mtx;
+      // cắt tỉa
       if (best >= beta) {
         return mtx;
       }
+      // trường hợp không cắt
       alpha = Math.max(alpha, best);
     })
-    return arrMtx[arrMtx.length - 1];
+    return obj;
   }
   else { // đỉnh min
-    let arrMtx = GetChilren(node, false, arr);  // tìm tất cả các con của nút min
+    let arrMtx = GetChilren(node.matrix, false, arr);  // tìm tất cả các con của nút min
     if (arrMtx.length == 0) {
       // console.log("node",node,isMax)
-      return {
-        matrix: node
-      };
+      return node
     }
+    let obj = new Object();
+    let best = 10000;
     arrMtx.forEach(mtx => {
-      let best = 10000;
-      let res = MiniMax(mtx.matrix, depth - 1, alpha, beta, true, arr);
+      let res = MiniMax(mtx, depth - 1, alpha, beta, true, arr);
       let val = GetValueOfMatrix(res.matrix, true);
       best = Math.min(best, val)
+      if (best == val)
+        obj = mtx;
       if (best <= beta) return mtx;
       beta = Math.min(beta, best)
     })
-    return arrMtx[arrMtx.length - 1];
+    return obj;
   }
 }
 
@@ -890,12 +894,12 @@ function GetChilren(currentMatrix, isMax, arr) {
   return martrixPending;
 }
 
-function Count(mtx,turn){
+function Count(mtx, turn) {
   let count = 0;
-  mtx.forEach(rows=>{
-    rows.forEach(col=>{
-      if(col == turn)
-      count++;
+  mtx.forEach(rows => {
+    rows.forEach(col => {
+      if (col == turn)
+        count++;
     })
   })
   return count;
