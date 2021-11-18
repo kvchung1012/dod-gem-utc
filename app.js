@@ -198,7 +198,7 @@ io.on("connect", (socket) => {
       // --------------NƯỚC ĐI CỦA MÁY-----------------------------
       let alpha = 10000;
       let beta = -10000;
-      var next = (MiniMax({ matrix: userConfig.martrix }, userConfig.rowNumber * 5, alpha, beta, false, []));
+      var next = (MiniMax({ matrix: userConfig.martrix },10, alpha, beta, false, []));
       // xử lý nước đi của máy
       if (next.out) {  // đi ra ngoài
         userConfig["botPoint"]++;
@@ -220,7 +220,6 @@ io.on("connect", (socket) => {
         userConfig.martrix[next.current.row][next.current.col] = 0;
         userConfig.martrix[next.step.row][next.step.col] = 2;
 
-        console.log(next)
         io.to(socket.id).emit(
           "move_item",
           2,
@@ -658,7 +657,7 @@ function MiniMax(node, depth, alpha, beta, isMax, arr) {
     let best = -10000;
     arrMtx.forEach(mtx => {
       let res = MiniMax(mtx, depth - 1, alpha, beta, false, arr);
-      let val = GetValueOfMatrix(res.matrix, false);
+      let val = GetValueOfMatrix(res.matrix, true);
       best = Math.max(best, val)
       if (best == val) // best có được cập nhật
         obj = mtx;
@@ -681,7 +680,7 @@ function MiniMax(node, depth, alpha, beta, isMax, arr) {
     let best = 10000;
     arrMtx.forEach(mtx => {
       let res = MiniMax(mtx, depth - 1, alpha, beta, true, arr);
-      let val = GetValueOfMatrix(res.matrix, true);
+      let val = GetValueOfMatrix(res.matrix, false);
       best = Math.min(best, val)
       if (best == val) // best có được cập nhật
         obj = mtx;
@@ -713,7 +712,7 @@ function GetValueOfMatrix(mtrx, isMax) {
         index++;
       }
     }
-    result += (mtrx.length - count - 1) * 50;
+    result += (mtrx.length - count - 1) * 100;
     //console.log("max",result);
     return result;
   }
@@ -736,7 +735,7 @@ function GetValueOfMatrix(mtrx, isMax) {
         index++;
       }
     }
-   result -= ((mtrx.length - count - 1) * 50);
+   result -= ((mtrx.length - count - 1) * 100);
     //console.log("min",result);
     return result;
   }
