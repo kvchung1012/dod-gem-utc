@@ -16,12 +16,12 @@ socket.on("suggest", (arr, row, col, moveOut) => {
   }
 });
 
-socket.on("join_status", (status, msg,turn,row) => {
+socket.on("join_status", (status, msg, turn, row) => {
   swal(msg);
   SetUp(row);
   if (status) {
     $(".my-name,.competitor-name").removeClass("active");
-    if(turn==1){
+    if (turn == 1) {
       $(".my-name").addClass("active");
     }
     else
@@ -30,7 +30,7 @@ socket.on("join_status", (status, msg,turn,row) => {
 });
 
 socket.on("move_item", (turn, turnCurrent, old_row, old_col, row, col) => {
-  console.log(turn,turnCurrent,old_row,old_col,row,col);
+  console.log(turn, turnCurrent, old_row, old_col, row, col);
   $(".block").removeClass("suggest"); // xóa đi các class gợi ý
   $(".move-out").removeClass("active"); // xóa đi các class gợi ý
   $(".move-out-stand").removeClass("active"); // xóa đi các class gợi ý
@@ -46,7 +46,7 @@ socket.on("move_item", (turn, turnCurrent, old_row, old_col, row, col) => {
 
   $(`.block[data-row=${row}][data-col=${col}]`).prop('onclick', null).off('click');
   $(`.block[data-row=${row}][data-col=${col}]`).append(
-    `${turn===1?'<div class="move-out" onclick="MoveOut()"></div>':'<div class="move-out-stand" onclick="MoveOut()"></div>'}
+    `${turn === 1 ? '<div class="move-out" onclick="MoveOut()"></div>' : '<div class="move-out-stand" onclick="MoveOut()"></div>'}
         <img src="${turn === 1 ? "./images/quan-do.png" : "./images/quan-den.png"}" 
         alt="" class="w-100 my-item" onclick="StepCurrent(this)">`
   );
@@ -126,6 +126,11 @@ socket.on("end_game_bot", (row, score, humanWin) => {
   $('.point1').html('');
   $('.my-point').html(score.human);
   $('.competitor-point').html(score.bot);
+
+
+  $(".my-name,.competitor-name").removeClass("active");
+  $(".my-name").addClass("active");
+  $(".competitor-name").addClass("active");
   SetUp(row);
 });
 

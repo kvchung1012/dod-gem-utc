@@ -58,8 +58,6 @@ var games = [];
 var game_match = [];
 // code in here
 io.on("connect", (socket) => {
-  console.log("Some one connect...");
-
   games.push({
     socketId: socket.id,
     martrix: [
@@ -200,23 +198,23 @@ io.on("connect", (socket) => {
       // --------------NƯỚC ĐI CỦA MÁY-----------------------------
       let alpha = 10000;
       let beta = -10000;
-      var next = (MiniMax({ matrix: userConfig.martrix }, 10, alpha, beta, false, []));
+      var next = (MiniMax({ matrix: userConfig.martrix }, userConfig.rowNumber * 5, alpha, beta, false, []));
       // xử lý nước đi của máy
       if (next.out) {  // đi ra ngoài
         userConfig["botPoint"]++;
         if (userConfig["botPoint"] == userConfig.rowNumber) {
           // end game
           MiniMaxEndGame(io, userConfig, false);
-          return;
         }
-        userConfig.martrix[next.current.row][next.current.col] = 0;
-
-        io.to(socket.id).emit(
-          "move_item_out",
-          1,
-          next.current.row,
-          next.current.col
-        );
+        else {
+          userConfig.martrix[next.current.row][next.current.col] = 0;
+          io.to(socket.id).emit(
+            "move_item_out",
+            1,
+            next.current.row,
+            next.current.col
+          );
+        }
       }
       else {
         userConfig.martrix[next.current.row][next.current.col] = 0;
@@ -631,6 +629,9 @@ function MiniMaxEndGame(io, game, humanWin) {
     game.gameScore.bot++;
   }
 
+  // cập nhật lượt cho người chơi đi đầu
+  game.humanTurn = true;
+
   // send to player
 
   // gửi về id của người win
@@ -659,7 +660,7 @@ function MiniMax(node, depth, alpha, beta, isMax, arr) {
       let res = MiniMax(mtx, depth - 1, alpha, beta, false, arr);
       let val = GetValueOfMatrix(res.matrix, false);
       best = Math.max(best, val)
-      if (best === val)
+      if (best == val) // best có được cập nhật
         obj = mtx;
       // cắt tỉa
       if (best >= beta) {
@@ -682,7 +683,7 @@ function MiniMax(node, depth, alpha, beta, isMax, arr) {
       let res = MiniMax(mtx, depth - 1, alpha, beta, true, arr);
       let val = GetValueOfMatrix(res.matrix, true);
       best = Math.min(best, val)
-      if (best == val)
+      if (best == val) // best có được cập nhật
         obj = mtx;
       if (best <= beta) return mtx;
       beta = Math.min(beta, best)
@@ -712,7 +713,7 @@ function GetValueOfMatrix(mtrx, isMax) {
         index++;
       }
     }
-    //result += (mtrx.length - count - 1) * 100;
+    //result += (mtrx.length - count - 1) * 50;
     //console.log("max",result);
     return result;
   }
@@ -735,7 +736,7 @@ function GetValueOfMatrix(mtrx, isMax) {
         index++;
       }
     }
-    //result -= ((mtrx.length - count - 1) * 100);
+   // result -= ((mtrx.length - count - 1) * 50);
     //console.log("min",result);
     return result;
   }
