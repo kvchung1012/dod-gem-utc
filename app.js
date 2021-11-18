@@ -713,7 +713,7 @@ function GetValueOfMatrix(mtrx, isMax) {
         index++;
       }
     }
-    //result += (mtrx.length - count - 1) * 50;
+    result += (mtrx.length - count - 1) * 50;
     //console.log("max",result);
     return result;
   }
@@ -736,7 +736,7 @@ function GetValueOfMatrix(mtrx, isMax) {
         index++;
       }
     }
-   // result -= ((mtrx.length - count - 1) * 50);
+   result -= ((mtrx.length - count - 1) * 50);
     //console.log("min",result);
     return result;
   }
