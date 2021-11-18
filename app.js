@@ -198,7 +198,7 @@ io.on("connect", (socket) => {
       // --------------NƯỚC ĐI CỦA MÁY-----------------------------
       let alpha = 10000;
       let beta = -10000;
-      var next = (MiniMax({ matrix: userConfig.martrix },10, alpha, beta, false, []));
+      var next = (MiniMax({ matrix: userConfig.martrix },5, alpha, beta, false, []));
       // xử lý nước đi của máy
       if (next.out) {  // đi ra ngoài
         userConfig["botPoint"]++;
